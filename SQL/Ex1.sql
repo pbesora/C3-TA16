@@ -1,5 +1,7 @@
 USE `actividades`;
 
+#Ejercicio 1. 
+
 select NOMBRE from articulos;
 
 select NOMBRE, PRECIO from articulos;
@@ -39,3 +41,47 @@ update articulos set NOMBRE = 'Impresora Láser' where CODIGO = 8;
 update articulos set PRECIO = PRECIO*0.9 where CODIGO>0;
 
 update articulos set PRECIO = PRECIO-10 where PRECIO >= 120 AND CODIGO>0;
+
+#Ejercicio 2.
+
+select APELLIDOS from empleados;
+
+select DISTINCT APELLIDOS from empleados;
+
+select * from empleados where APELLIDOS = 'Smith';
+
+select * from empleados where APELLIDOS = 'Smith' OR APELLIDOS = 'Rogers';
+
+select * from empleados where DEPARTAMENTO = 14;
+
+select * from empleados where DEPARTAMENTO = 37 OR DEPARTAMENTO = 77;
+
+select * from empleados where APELLIDOS like 'P%';
+
+select SUM(PRESUPUESTO) AS Presupuesto_Total from departamentos;
+
+select count(DNI) AS Num_Empleados from empleados group by DEPARTAMENTO;
+
+select e.DNI, e.NOMBRE, e.APELLIDOS, d.CODIGO AS Cod_Departamento, d.NOMBRE AS Nom_Departamento, d.PRESUPUESTO from empleados AS e, departamentos AS d;
+
+select e.NOMBRE, e.APELLIDOS, d.NOMBRE AS Nom_Departamento, d.PRESUPUESTO from empleados AS e, departamentos AS d;
+
+select e.NOMBRE, e.APELLIDOS from empleados AS e, departamentos AS d where e.DEPARTAMENTO = d.CODIGO AND d.PRESUPUESTO > 60000;
+
+select * from departamentos where PRESUPUESTO > (select avg(PRESUPUESTO) from departamentos);
+
+select d.NOMBRE from departamentos AS d, empleados AS e where (select count(CODIGO) from empleados where DEPARTAMENTO = d.CODIGO) > 2 group by d.NOMBRE;
+
+insert into departamentos (NOMBRE, PRESUPUESTO, CODIGO) values ('Calidad',40000,11);
+insert into empleados values ('89267109','Ester','Vazquez',11);
+
+update departamentos set PRESUPUESTO = PRESUPUESTO * 0.9 where CODIGO > 0;
+
+update empleados set DEPARTAMENTO = 14 where DEPARTAMENTO = 77;
+
+delete from empleados where DEPARTAMENTO = 14;
+
+delete from empleados where DEPARTAMENTO = (select CODIGO from departamentos where PRESUPUESTO > 60000);
+
+delete from empleados where DEPARTAMENTO > 0;
+
