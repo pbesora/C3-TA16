@@ -113,11 +113,11 @@ insert into cajas values ('H5RT', 'Papel', 200, 2);
 
 update cajas set valor=valor*0.85;
 
-#update cajas set valor=valor*0.80 where valor > (select avg(valor) FROM cajas);
+update cajas as c set c.valor=c.valor*0.8 where c.valor > (select * from (select avg(valor) FROM cajas) as z);
 
 delete from cajas where valor<100;
 
-#delete from  cajas where almacen = (select CODIGO from almacenes where capacidad < (select count(NUMREFERENCIA) from cajas where almacen = CODIGO));
+delete from  cajas where almacen = (select * from (select CODIGO from almacenes where capacidad < (select count(NUMREFERENCIA) from cajas where almacen = CODIGO)) as z);
 
 #Ejercicio 4.
 
