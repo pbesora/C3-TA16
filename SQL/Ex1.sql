@@ -38,9 +38,9 @@ insert into articulos (CODIGO, NOMBRE, PRECIO, FABRICANTE) values (11, 'Altavoce
 
 update articulos set NOMBRE = 'Impresora Láser' where CODIGO = 8;
 
-update articulos set PRECIO = PRECIO*0.9 where CODIGO>0;
+update articulos set PRECIO = PRECIO*0.9;
 
-update articulos set PRECIO = PRECIO-10 where PRECIO >= 120 AND CODIGO>0;
+update articulos set PRECIO = PRECIO-10 where PRECIO >= 120;
 
 #Ejercicio 2.
 
@@ -75,7 +75,7 @@ select d.NOMBRE from departamentos AS d, empleados AS e where (select count(CODI
 insert into departamentos (NOMBRE, PRESUPUESTO, CODIGO) values ('Calidad',40000,11);
 insert into empleados values ('89267109','Ester','Vazquez',11);
 
-update departamentos set PRESUPUESTO = PRESUPUESTO * 0.9 where CODIGO > 0;
+update departamentos set PRESUPUESTO = PRESUPUESTO * 0.9;
 
 update empleados set DEPARTAMENTO = 14 where DEPARTAMENTO = 77;
 
@@ -83,5 +83,60 @@ delete from empleados where DEPARTAMENTO = 14;
 
 delete from empleados where DEPARTAMENTO = (select CODIGO from departamentos where PRESUPUESTO > 60000);
 
-delete from empleados where DEPARTAMENTO > 0;
+delete from empleados;
 
+#Ejercicio 3.
+
+select * from almacenes;
+
+select * from cajas where valor > 150;
+
+select distinct contenido from cajas;
+
+select avg(valor) as  Valor_Medio from cajas group by contenido;
+
+select avg(valor) as  Valor_Medio from cajas group by almacen;
+
+select almacen from cajas group by almacen having avg(valor)  > 150 ;
+
+select c.NUMREFERENCIA, a.LUGAR from cajas as c, almacenes as a where c.almacen = a.CODIGO;
+
+select almacen, count(NUMREFERENCIA) as Numero_Cajas from cajas group by almacen;
+
+select CODIGO from almacenes where capacidad < (select count(NUMREFERENCIA) from cajas where almacen = CODIGO);
+
+select c.NUMREFERENCIA from cajas as c where c.almacen = (select CODIGO from almacenes where LUGAR = 'Bilbao') ;
+
+insert into almacenes values (11, 'Barcelona', 3);
+
+insert into cajas values ('H5RT', 'Papel', 200, 2);
+
+update cajas set valor=valor*0.85;
+
+#update cajas set valor=valor*0.80 where valor > (select avg(valor) FROM cajas);
+
+delete from cajas where valor<100;
+
+#delete from  cajas where almacen = (select CODIGO from almacenes where capacidad < (select count(NUMREFERENCIA) from cajas where almacen = CODIGO));
+
+#Ejercicio 4.
+
+select nombre from peliculas;
+
+select distinct calificacionedad from peliculas;
+
+select * from peliculas where calificacionedad is null;
+
+select * from salas where pelicula is null;
+
+select * from salas left join peliculas on salas.pelicula = peliculas.codigo;
+
+select * from salas right join peliculas on salas.pelicula = peliculas.codigo;
+
+select peliculas.nombre from salas right join peliculas on salas.pelicula = peliculas.codigo where salas.pelicula is null;
+
+insert into peliculas values (10, 'Uno, Dos, Tres', '+7');
+
+update peliculas set calificacionedad = 'no recomendables para menores de 13 años' where calificacionedad is null;
+
+delete from salas where pelicula in (select codigo from peliculas where calificacionedad = 'G');  
